@@ -6,12 +6,13 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var sanatize = require("sanitize-html");
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/bears', {
     useMongoClient: true
 });
-var Bear = require('/home/ubuntu/workspace/SE3316_Lab3/models/bear');
+var Entry = require('/home/ubuntu/workspace/SE3316_Lab3/lab3-p2/models/entry');
 
 //configure the app to use bodyParser
 //this will allow reading of data from POST requests
@@ -34,80 +35,37 @@ router.use(function(req, res, next){
 
 
 //REAL ROUTES
-router.route('/bears')
-    //create a BEAR (POST /api/bears)
+router.route('/entries')
+    //create a entry (POST /api/entry)
     .post(function(req, res){
-        var bear = new Bear();  //create new instance of bear model
-        bear.name = req.body.name; //set the bear's name, coming from the request
+        var entry = new Entry();  //create new instance of Entry model
+        console.log(req.body.text);
+        entry.text = req.body.text; //set the entry's text, coming from the request body
+        entry.date = Date();//set the entry's date
         
-        //save the bear and checkfor errors
-        bear.save(function(err){
+        //save the entry and check for errors
+        entry.save(function(err){
            if(err){
                res.send(err);
            } 
            else{
-               res.json({message: 'Bear created'});
+               res.json({message: 'success'});
            }
         });
     })
     
-    //get all the BEARS (GET /api/bears)
+    //get the last 20 entries in order (GET /api/entries)
     .get(function(req, res){
-        Bear.find(function(err, bears){
+        Entry.find({}, {"sort": [["date","asc"]]}, function(err, entry){
             if(err){
                 res.send(err);
             }
             else{
-                res.json(bears);
+                res.json(entry);
             }
         });
     });
 
-router.route('/bears/:bear_id')
-    //get the bear with the id (GET /api/bears/{{bear_id}})
-    .get(function(req, res){
-       Bear.findById(req.params.bear_id, function(err, bear){
-          if(err){
-              res.send(err);
-          } 
-          else{
-              res.json(bear);
-          }
-       }); 
-    })
-    //update the bear with the id (PUT /api/bears/{{bear_id}})
-    .put(function(req, res){
-        //use the model to find the existing bear
-        Bear.findById(req.params.bear_id, function(err, bear){
-           if(err){
-               res.send(err);
-           } 
-           else{
-               bear.name = req.body.name;
-               bear.save(function(err){
-                  if(err){
-                      res.send(err);
-                  } 
-                  else{
-                      res.json({message: 'Bear updated'});
-                  }
-               });
-           }
-        });
-    })
-    //delete a bear with the id (DELETE /api/bears/{{bear_id}})
-    .delete(function(req, res){
-        Bear.remove({
-            _id: req.params.bear_id
-        }, function(err, bear){
-           if(err){
-               res.send(err);
-           } 
-           else{
-               res.json({message: 'Bear deleted'});
-           }
-        });
-    });
 
 //=======REGISTER ROUTES===========
 //all routes prefixed with /api
