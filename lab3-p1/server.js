@@ -11,7 +11,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:27017/bears', {
     useMongoClient: true
 });
-var Bear = require('/home/ubuntu/workspace/SE3316_Lab3/models/bear');
+var Bear = require('/home/ubuntu/workspace/SE3316_Lab3/lab3-p1/models/bear');
 
 //configure the app to use bodyParser
 //this will allow reading of data from POST requests
