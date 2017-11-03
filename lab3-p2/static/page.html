@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Message Board</title>
+        <!-- some bootstrap and jquery to make the page a little nicer and code a bit simpler -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
+        <!-- leave a bit of blank space below the lowest button so that it isnt at the scroll limit (looks a bit nicer) -->
+        <style>
+            .btn{
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <!-- 
+        When the user types in a comment and hits send, no form is used for the request. 
+        Instead, I opted to build the request myself, since its being done async anyways.
+        -->
+        
+        <!-- display a nice little page header -->
+        <div class="page-header">
+            <h1 style="text-align:center;">Message Board</h1>
+        </div>
+        
+        <!-- this is where the meat of the page goes -->
+        <div class="container">
+            
+            <!-- use a row to make two columns so we can present the courses beside each other -->
+            <div class="row">
+                <!-- first course -->
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <h3>MyCourse1</h3>
+                    <div id="messageboard1">
+                        <!-- this is where the messages will go for course 1 -->
+                    </div>
+                    <br />
+                    <br />
+                    <!-- a text box where the user can type a message -->
+                    <textarea id="user_message1" class="form-control" placeholder="Enter message here..."></textarea>
+                    <br />
+                    <!-- a button to send the message -->
+                    <button type="button" class="btn btn-success btn-block" id="mbsend1">
+                        Send
+                    </button>
+                </div>
+                
+                <!-- second course -->
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <h3>MyCourse2</h3>
+                    <div id="messageboard2">
+                        <!-- this is where the messages will go for course 2 -->
+                    </div>
+                    <br />
+                    <br />
+                    <!-- a text box where the user can type a message -->
+                    <textarea id="user_message2" class="form-control" placeholder="Enter message here..."></textarea>
+                    <br />
+                    <!-- a button to send the message -->
+                    <button type="button" class="btn btn-success btn-block" id="mbsend2">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- the javascript for the page to async communicate with the server to get messages in at fixed interval and to post new messages -->
+        <script type="text/javascript" src="/page.js"></script>
+    </body>
+</html>
